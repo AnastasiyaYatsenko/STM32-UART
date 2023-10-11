@@ -219,25 +219,27 @@ int main(void)
   HAL_UART_Transmit(&huart1, str, strlen(str), 30);
 
   for (int i=0; i<sizeof(regs)/4; i++) {
-	  req.register_address = regs[i];
-	  req.crc              = CalcCRC(req.bytes);
+  	  req.register_address = regs[i];
+  	  req.crc              = CalcCRC(req.bytes);
 
-	  status[i] = HAL_UART_Receive(&huart2, (uint8_t *)(& ans[i].bytes), 8, 2);
+  //	  status[i] = HAL_UART_Receive(&huart2, (uint8_t *)(& ans[i].bytes), 8, 2);
+  	  sr[i][0] = huart2.Instance->SR;
 
-	  sr[i][0] = huart2.Instance->SR;
-	  HAL_UART_Transmit(&huart2, (uint8_t *)(& req), 4, 1);
-	  sr[i][1] = huart2.Instance->SR;
+  	  HAL_HalfDuplex_EnableTransmitter(&huart2);
+  	  HAL_UART_Transmit(&huart2, (uint8_t *)(& req), 4, 1);
+  	  sr[i][1] = huart2.Instance->SR;
 
-	  status1[i] = HAL_UART_AbortReceive(&huart2); // Прерываем прием данных
-	  sr[i][2] = huart2.Instance->SR;
+  //	  status1[i] = HAL_UART_AbortReceive(&huart2); // Прерываем прием данных
+  	  sr[i][2] = huart2.Instance->SR;
 
-	  cc[i]=0;
-	  status1[i] = HAL_UART_Receive(&huart2, cc+i, 1, 1); // == HAL_OK;
-	  sr[i][3] = huart2.Instance->SR;
+  	  cc[i]=0;
+  	  HAL_HalfDuplex_EnableReceiver(&huart2);
+  //	  status1[i] = HAL_UART_Receive(&huart2, cc+i, 1, 1); // == HAL_OK;
+  	  sr[i][3] = huart2.Instance->SR;
 
-	  status[i] = HAL_UART_Receive(&huart2, (uint8_t *)(& ans[i].bytes), 8, 12);
-	  sr[i][4] = huart2.Instance->SR;
-  }
+  	  status[i] = HAL_UART_Receive(&huart2, (uint8_t *)(& ans[i].bytes), 8, 12);
+  	  sr[i][4] = huart2.Instance->SR;
+    }
 
   for (int i=0; i<sizeof(regs)/4; i++) {
       sprintf(str, "Статусы: %02x %02x %02x %02x %02x  CC:[%d] %02x  \0",sr[i][0],sr[i][1],sr[i][2],sr[i][3],sr[i][4],status1[i],cc[i]);
