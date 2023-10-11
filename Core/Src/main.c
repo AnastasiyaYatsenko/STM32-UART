@@ -157,22 +157,22 @@ int main(void)
 */
 //  HAL_UART_Receive_IT(&huart1, receiveBuffer, BUFFER_SIZE);
 //  HAL_UART_Transmit_IT(&huart2, transmitBuffer, BUFFER_SIZE);
-//  HAL_Delay(10); //задержка в мс
+//  HAL_Delay(10); //задержка в м�?
 //  for (unsigned char i = 0; i < BUFFER_SIZE; i++)
 //      receiveBuffer[i] = 0;
 /*  HAL_UART_Transmit_IT(&huart1, transmitBuffer, BUFFER_SIZE);
-//  HAL_Delay(2); //задержка в мс
+//  HAL_Delay(2); //задержка в м�?
   uint32_t sr = huart2.Instance->SR;
   uint32_t dr = huart2.Instance->DR;
   uint32_t brr = huart2.Instance->BRR;
 
   HAL_UART_Receive_IT(&huart2, receiveBuffer, BUFFER_SIZE);
-  HAL_Delay(2); //задержка в мс
+  HAL_Delay(2); //задержка в м�?
   sr = huart2.Instance->SR & 0x20;
 
   brr = huart2.Instance->BRR*115200;
 */
-//  HAL_Delay(100); //задержка в мс
+//  HAL_Delay(100); //задержка в м�?
 
   /* USER CODE END 2 */
 
@@ -263,7 +263,7 @@ int main(void)
   while (1)
   {
 //	 HAL_UART_Transmit(&huart2, (uint8_t *)(& req), 4, 1);
-//	 HAL_Delay(0); //задержка в мс
+//	 HAL_Delay(0); //задержка в м�?
 
 //	 status1 = HAL_UART_AbortReceive(&huart2); // Прерываем прием данных
 //     HAL_UART_AbortTransmit(&huart2); // Прерываем передачу данных
@@ -276,7 +276,7 @@ int main(void)
     // ожидание 1го байта команды
 //    while ( HAL_UART_Receive(&huart2, (uint8_t *)(& ans), 1, 1) != HAL_OK ) ;
 
-    // прием оставшихся 2х байтов команды
+    // прием о�?тавших�?�? 2х байтов команды
 //    if(
 //    status = HAL_UART_Receive(&huart2, (uint8_t *)(& ans.bytes), 8, 1);
 //    != HAL_OK ) continue;
@@ -285,7 +285,7 @@ int main(void)
     // проверка команды
 //    if ( (str[0] == 0x10) && ((str[0] ^ str[1] ^ 0xe5) != str[2]) ) continue;
 
-    // подсчет контрольного кода ответа
+    // под�?чет контрольного кода ответа
 //    uint16_t sum= 0;
 //    for (uint16_t i=0; i<10; i++) sum += * ((uint8_t *)(& par) + i);
 //    par.s = sum ^ 0xa1e3;
@@ -394,7 +394,7 @@ static void MX_USART2_UART_Init(void)
   huart2.Init.Mode = UART_MODE_TX_RX;
   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
+  if (HAL_HalfDuplex_Init(&huart2) != HAL_OK)
   {
     Error_Handler();
   }
